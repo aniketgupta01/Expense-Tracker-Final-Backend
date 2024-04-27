@@ -1,6 +1,8 @@
 const User = require('../model/user');
 const sequelize = require('../util/database')
 
+const bcrypt = require('bcrypt');
+
 exports.addUser = async (req,res,next) => {
     const name = req.body.name;
     const email = req.body.email;
@@ -14,15 +16,21 @@ exports.addUser = async (req,res,next) => {
        })
        if(user.length==0){
 
-        const data = await User.create({
-            name:name,
-            email:email,
-            password:password
+        bcrypt.hash(password, 10, async(err, hash) => {
+            console.log(err);
+            await User.create({
+                name:name,
+                email:email,
+                password:hash
+            })
+           return res.status(200).json("User created.")
         })
-        return res.send("User created.")
 
-       }
+        
+
+       }else{
        res.status(204).send();
+    }
 
     }
     catch(err){
@@ -34,36 +42,28 @@ exports.addUser = async (req,res,next) => {
 exports.loginUser = async (req,res,next) => {
     const email = req.body.email;
     const password = req.body.password;
-
-    const user = await User.findAll({
-        where:{
-            email:email
-        }
-    })
-
     try{
-        if(user.length == 0){
-           return res.status(404).json({message:'not found'})
-        }
-        else{
-            const result = await User.findAll({
-                where:{
-                    email:email,
-                    password: sequelize.where(
-                        sequelize.fn('BINARY', sequelize.col('password')),
-                        password
-                      )
-                }
-            })
-            if(result.length == 0){
-                return res.status(401).json({message:'wrong password'});
+    const user = await User.findAll({where : {email:email}})
+
+    if(user.length>0){
+        bcrypt.compare(password, user[0].password, (err,result) => {
+            if(err){
+                throw new Error('Something went wrong');
             }
-            else{
+            if(result === true){
                 res.status(200).json({message:'success'});
             }
-        }
-
+            else{
+                res.status(400).json({message:'wrong password'})
+            }
+        })
     }
+    else{
+        res.status(404).json({message:'user not found'});
+    }
+
+    
+    }       
     catch(err){
         console.log(err);
     }
