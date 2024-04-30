@@ -2,6 +2,11 @@ const User = require('../model/user');
 const sequelize = require('../util/database')
 
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+function generateToken(id,name){
+   return jwt.sign({userId:id,name:name},'secretkey');
+}
 
 exports.addUser = async (req,res,next) => {
     const name = req.body.name;
@@ -51,7 +56,8 @@ exports.loginUser = async (req,res,next) => {
                 throw new Error('Something went wrong');
             }
             if(result === true){
-                res.status(200).json({message:'success'});
+                const token = generateToken(user[0].id,user[0].name)
+                return res.status(200).json({message:'success',token:token});
             }
             else{
                 res.status(400).json({message:'wrong password'})
@@ -68,3 +74,4 @@ exports.loginUser = async (req,res,next) => {
         console.log(err);
     }
 }
+

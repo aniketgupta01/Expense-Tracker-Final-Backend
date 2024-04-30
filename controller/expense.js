@@ -21,7 +21,10 @@ exports.addExpense = async (req,res,next) => {
 
 exports.getExpenses = async (req,res,next) => {
     try{
-    let expenses = await Expense.findAll();
+        const userId = req.user.id;
+    let expenses = await Expense.findAll({where:{
+        userId:userId
+    }});
     res.json(expenses);
 
     }
