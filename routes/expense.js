@@ -7,7 +7,7 @@ const userAuthorization = require('../middleware/auth');
 
 const router = express.Router();
 
-router.post('/expense/add-expense',expenseController.addExpense);
+router.post('/expense/add-expense',userAuthorization.authenticate,expenseController.addExpense);
 
 router.get('/expense/get-expenses', userAuthorization.authenticate, expenseController.getExpenses);
 

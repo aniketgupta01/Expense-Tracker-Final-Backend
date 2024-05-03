@@ -4,12 +4,14 @@ exports.addExpense = async (req,res,next) => {
     const amount = req.body.amount;
     const description = req.body.description;
     const category = req.body.category;
+    const userId = req.user.id;
 
     try{
         const expense = await Expense.create({
             amount:amount,
             description:description,
-            category:category
+            category:category,
+            userId:userId
         }) 
 
         res.json(expense);
@@ -35,6 +37,7 @@ exports.getExpenses = async (req,res,next) => {
 
 exports.deleteExpense = async (req,res,next) => {
     const expense_id = req.params.id;
+    // const userId = req.user.id;
 
     try{
         let result = await Expense.findOne({where:{id:expense_id}});
