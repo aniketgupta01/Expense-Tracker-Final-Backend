@@ -33,9 +33,9 @@ exports.purchasePremium = async(req,res,next) => {
 
 exports.updateStatus = async (req,res,next) => {
     try{
-    const {payment_id, order_id} = req.body;
+    const {payment_id, order_id,status} = req.body;
     const order = await Order.findOne({where:{order_id:order_id}})
-    const promise1 = order.update({payment_id:payment_id,status:'SUCCESSFUL'})
+    const promise1 = order.update({payment_id:payment_id,status:status})
     const promise2 = req.user.update({isPremiumUser:true});
     Promise.all([promise1,promise2])
     .then(() => {

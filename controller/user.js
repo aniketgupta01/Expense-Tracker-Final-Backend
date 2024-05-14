@@ -57,7 +57,7 @@ exports.loginUser = async (req,res,next) => {
             }
             if(result === true){
                 const token = generateToken(user[0].id,user[0].name)
-                return res.status(200).json({message:'success',token:token});
+                return res.status(200).json({message:'success',token:token,isPremium:user[0].isPremiumUser});
             }
             else{
                 res.status(400).json({message:'wrong password'})
