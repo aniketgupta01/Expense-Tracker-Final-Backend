@@ -1,4 +1,5 @@
 const Expense = require('../model/expense');
+const User = require('../model/user');
 
 exports.addExpense = async (req,res,next) => {
     const amount = req.body.amount;
@@ -13,6 +14,19 @@ exports.addExpense = async (req,res,next) => {
             category:category,
             userId:userId
         }) 
+        const user = await User.findOne({
+            attributes:['totalExpense'],
+            where:{id:userId}
+        })
+        let total_expense = user.totalExpense;
+        let final_amt = total_expense+parseInt(amount);
+        
+
+        const result = await User.update(
+        { totalExpense:final_amt},
+        {where:{id:userId}}
+    
+    )
 
         res.json(expense);
     }
@@ -37,12 +51,29 @@ exports.getExpenses = async (req,res,next) => {
 
 exports.deleteExpense = async (req,res,next) => {
     const expense_id = req.params.id;
-    // const userId = req.user.id;
+    const userId = req.user.id;
 
     try{
         let result = await Expense.findOne({where:{id:expense_id}});
+
+        //Updating the totalExpense column
+        const user = await User.findOne({
+            attributes:['totalExpense'],
+            where:{id:userId}
+        })
+        let total_expense = user.totalExpense;
+        let final_amt = total_expense - result.amount;
+        const new_expense = await User.update(
+            { totalExpense:final_amt},
+            {where:{id:userId}}
+        
+        )
+        
+        //Deleting the expense.
         result.destroy();
         res.json({message:"Expense Deleted"});
+
+        
     }
 
     catch(err){
