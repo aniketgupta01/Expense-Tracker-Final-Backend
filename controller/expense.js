@@ -1,7 +1,9 @@
 const Expense = require('../model/expense');
 const User = require('../model/user');
+const sequelize = require('../util/database');
 
 exports.addExpense = async (req,res,next) => {
+    const t = await sequelize.transaction();
     const amount = req.body.amount;
     const description = req.body.description;
     const category = req.body.category;
@@ -13,24 +15,23 @@ exports.addExpense = async (req,res,next) => {
             description:description,
             category:category,
             userId:userId
-        }) 
-        const user = await User.findOne({
-            attributes:['totalExpense'],
-            where:{id:userId}
-        })
-        let total_expense = user.totalExpense;
-        let final_amt = total_expense+parseInt(amount);
+        },{transaction:t}) 
+        
+        let total_expense = Number(req.user.totalExpense)+Number(amount);
         
 
         const result = await User.update(
-        { totalExpense:final_amt},
-        {where:{id:userId}}
+        { totalExpense:total_expense},
+        {where:{id:userId},transaction:t}
     
     )
+    await t.commit();
 
-        res.json(expense);
+        res.status(200).json(expense);
     }
     catch(err){
+        await t.rollback();
+        res.status(500).json({error:err})
         console.log(err);
     }
 }
@@ -57,11 +58,8 @@ exports.deleteExpense = async (req,res,next) => {
         let result = await Expense.findOne({where:{id:expense_id}});
 
         //Updating the totalExpense column
-        const user = await User.findOne({
-            attributes:['totalExpense'],
-            where:{id:userId}
-        })
-        let total_expense = user.totalExpense;
+        
+        let total_expense = Number(req.user.totalExpense)
         let final_amt = total_expense - result.amount;
         const new_expense = await User.update(
             { totalExpense:final_amt},

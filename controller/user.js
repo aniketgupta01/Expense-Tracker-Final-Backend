@@ -26,7 +26,8 @@ exports.addUser = async (req,res,next) => {
             await User.create({
                 name:name,
                 email:email,
-                password:hash
+                password:hash,
+                totalExpense:0
             })
            return res.status(200).json("User created.")
         })
