@@ -13,6 +13,10 @@ router.get('/expense/get-expenses', userAuthorization.authenticate, expenseContr
 
 router.get('/expense/delete-expense/:id',userAuthorization.authenticate,expenseController.deleteExpense);
 
+router.get('/expense/download',userAuthorization.authenticate,expenseController.downloadExpense)
+
+router.get('/expense/get-downloads',userAuthorization.authenticate,expenseController.getListOfDownloads)
+
 
 
 
