@@ -46,11 +46,12 @@ exports.addExpense = async (req,res,next) => {
 exports.getExpenses = async (req,res,next) => {
     try{
         const page = +req.query.page || 1;
+        const limits = Number(+req.query.limit);
         const userId = req.user.id;
     let expenses = await Expense.findAll({
         where:{userId:userId},
-        offset:(page-1)*5,
-        limit:5
+        offset:(page-1)*limits,
+        limit:limits
     });
     const totalItems = await Expense.count({where:{userId:req.user.id}})
     res.status(200).json({
@@ -58,11 +59,11 @@ exports.getExpenses = async (req,res,next) => {
         isPremium:req.user.isPremiumUser,
         userName:req.user.name,
         currentPage:page,
-        hasNextPage: 5 * page < totalItems,
+        hasNextPage: limits * page < totalItems,
         nextPage:page+1,
         hasPreviousPage:page>1,
         previousPage:page-1,
-        lastPage: Math.ceil(totalItems/5)
+        lastPage: Math.ceil(totalItems/limits)
     });
 
     }
