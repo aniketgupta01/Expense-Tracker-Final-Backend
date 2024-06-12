@@ -45,11 +45,25 @@ exports.addExpense = async (req,res,next) => {
 
 exports.getExpenses = async (req,res,next) => {
     try{
+        const page = +req.query.page || 1;
         const userId = req.user.id;
-    let expenses = await Expense.findAll({where:{
-        userId:userId
-    }});
-    res.status(200).json({allExpenses:expenses, isPremium:req.user.isPremiumUser, userName:req.user.name});
+    let expenses = await Expense.findAll({
+        where:{userId:userId},
+        offset:(page-1)*5,
+        limit:5
+    });
+    const totalItems = await Expense.count({where:{userId:req.user.id}})
+    res.status(200).json({
+        allExpenses:expenses,
+        isPremium:req.user.isPremiumUser,
+        userName:req.user.name,
+        currentPage:page,
+        hasNextPage: 5 * page < totalItems,
+        nextPage:page+1,
+        hasPreviousPage:page>1,
+        previousPage:page-1,
+        lastPage: Math.ceil(totalItems/5)
+    });
 
     }
     catch(err){
@@ -61,7 +75,9 @@ exports.deleteExpense = async (req,res,next) => {
     const expense_id = req.params.id;
     const userId = req.user.id;
 
+
     try{
+        
         let result = await Expense.findOne({where:{id:expense_id}});
 
         //Updating the totalExpense column
@@ -75,8 +91,9 @@ exports.deleteExpense = async (req,res,next) => {
         )
         
         //Deleting the expense.
-        result.destroy();
+        await result.destroy();
         res.json({message:"Expense Deleted"});
+
 
         
     }
