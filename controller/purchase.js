@@ -4,8 +4,8 @@ const Order = require('../model/order')
 exports.purchasePremium = async(req,res,next) => {
     try{
         var rzp = new Razorpay({
-            key_id : 'rzp_test_qcNXpdKVPBONBS',
-            key_secret : 'EIUGX2FpD4j15pArfKu4VyNz'
+            key_id : process.env.RAZORPAY_KEY_ID ,
+            key_secret : process.env.RAZORPAY_KEY_SECRET 
         })
         const amount = 2500;
 
@@ -34,7 +34,7 @@ exports.purchasePremium = async(req,res,next) => {
 exports.updateStatus = async (req,res,next) => {
     try{
     const {payment_id, order_id,status} = req.body;
-    const isPremium = null;
+    let isPremium = null;
     if(status == 'SUCCESSFUL'){
         isPremium = true;
     }

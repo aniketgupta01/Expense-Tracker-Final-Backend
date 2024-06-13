@@ -1,0 +1,4 @@
+::1 - - [13/Jun/2024:06:10:10 +0000] "GET /expense/get-expenses?page=1&&limit=5 HTTP/1.1" 304 - "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+::1 - - [13/Jun/2024:06:10:51 +0000] "POST /user/login HTTP/1.1" 200 181 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+::1 - - [13/Jun/2024:06:10:52 +0000] "GET /expense/get-expenses?page=1&&limit=5 HTTP/1.1" 200 467 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+::1 - - [13/Jun/2024:06:11:02 +0000] "GET /expense/get-expenses?page=1&&limit=20 HTTP/1.1" 200 467 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
