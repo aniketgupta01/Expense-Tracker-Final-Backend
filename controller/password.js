@@ -33,7 +33,7 @@ exports.forgotPassword = async (req, res, next) => {
     }
 
 
-    const path = `http://192.168.1.5:6500/password/reset-password/${id}`;
+    const path = `http://13.51.172.95:6500/password/reset-password/${id}`;
     const sender = {
       name: "Expense Tracker - Aniket",
       email: "aniketgupta8088@gmail.com",
