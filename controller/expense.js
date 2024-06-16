@@ -46,7 +46,7 @@ exports.addExpense = async (req,res,next) => {
 exports.getExpenses = async (req,res,next) => {
     try{
         const page = +req.query.page || 1;
-        const limits = Number(+req.query.limit);
+        const limits = Number(+req.query.limit) || 5;
         const userId = req.user.id;
     let expenses = await Expense.findAll({
         where:{userId:userId},
