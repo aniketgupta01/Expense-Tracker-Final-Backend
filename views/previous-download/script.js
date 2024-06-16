@@ -3,7 +3,7 @@ const downloadList = document.getElementById('downloads');
 window.addEventListener('DOMContentLoaded', async() => {
     const token = localStorage.getItem('token');
         try{
-            const result = await axios.get('http://localhost:6500/expense/get-downloads',{headers:{'Authorization':token}})
+            const result = await axios.get('http://http://13.51.172.95:6500/expense/get-downloads',{headers:{'Authorization':token}})
             if(result.data.downloadList.length === 0){
                 showLinks(0);
             }
