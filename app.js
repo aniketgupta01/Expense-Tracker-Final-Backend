@@ -65,9 +65,9 @@ User.hasMany(FilesDownloaded);
 FilesDownloaded.belongsTo(User);
 
 
-// sequelize.sync()
-// .then((result) => {
-//     app.listen(process.env.HOST || 6500)
-// })
-// .catch(err => console.log(err))
-app.listen(6500);
+sequelize.sync()
+.then((result) => {
+    app.listen(process.env.HOST || 6500)
+})
+.catch(err => console.log(err))
+
