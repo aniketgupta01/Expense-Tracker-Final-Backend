@@ -44,10 +44,11 @@ app.use(purchaseRoutes);
 app.use(premiumRoutes);
 app.use(passwordRoutes);
 
-app.use((req,res) => {
-    if(req.url === '/'){
-    res.sendFile(path.join(__dirname,`views/login/index.html`))
-}
+app.use((req,res,next) => {
+
+    res.sendFile(path.join(__dirname,`views/${req.url}`))
+
+
 })
 
 
@@ -64,8 +65,9 @@ User.hasMany(FilesDownloaded);
 FilesDownloaded.belongsTo(User);
 
 
-sequelize.sync()
-.then((result) => {
-    app.listen(process.env.HOST || 6500)
-})
-.catch(err => console.log(err))
+// sequelize.sync()
+// .then((result) => {
+//     app.listen(process.env.HOST || 6500)
+// })
+// .catch(err => console.log(err))
+app.listen(6500);
