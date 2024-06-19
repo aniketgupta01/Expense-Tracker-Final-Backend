@@ -24,7 +24,7 @@ async function submitExpense(e){
 
     try{
         const token = localStorage.getItem('token')
-        let result = await axios.post('http://13.51.172.95:6500/expense/add-expense',obj,{headers:{'Authorization':token}});
+        let result = await axios.post('http://13.51.200.50:6500/expense/add-expense',obj,{headers:{'Authorization':token}});
         showExpense(result.data); 
         expenseForm.reset();
     }
@@ -61,7 +61,7 @@ window.addEventListener('DOMContentLoaded',async() => {
      const page = 1;
     const token = localStorage.getItem('token')
     
-    let expenses = await axios.get(`http://13.51.172.95:6500/expense/get-expenses?page=${page}&&limit=${limit}`,{headers:{"Authorization":token}});
+    let expenses = await axios.get(`http://13.51.200.50:6500/expense/get-expenses?page=${page}&&limit=${limit}`,{headers:{"Authorization":token}});
     showPagination(expenses.data);
     userName.innerHTML = expenses.data.userName;
     if(expenses.data.isPremium){
@@ -81,7 +81,7 @@ window.addEventListener('DOMContentLoaded',async() => {
 
 async function deleteExpense(id){
     const token = localStorage.getItem('token')
-    let result = await axios.get(`http://13.51.172.95:6500/expense/delete-expense/${id}`,{headers : {"Authorization" : token}});
+    let result = await axios.get(`http://13.51.200.50:6500/expense/delete-expense/${id}`,{headers : {"Authorization" : token}});
 
     removeExpense(id);
 
@@ -97,7 +97,7 @@ function removeExpense(id){
 document.getElementById('rzp-button').onclick = async function (e){
     e.preventDefault();
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://13.51.172.95:6500/purchase/premiumMembership',{headers : {"Authorization" : token}})
+    const response = await axios.get('http://13.51.200.50:6500/purchase/premiumMembership',{headers : {"Authorization" : token}})
 
     console.log(response);
 
@@ -105,7 +105,7 @@ document.getElementById('rzp-button').onclick = async function (e){
         "key":response.data.key_id,
         "order_id":response.data.order.id,
         "handler": async function(response){
-            await axios.post('http://13.51.172.95:6500/purchase/updatetransactionstatus',{
+            await axios.post('http://13.51.200.50:6500/purchase/updatetransactionstatus',{
                 order_id:options.order_id,
                 payment_id:response.razorpay_payment_id,
                 status:'SUCCESSFUL'
@@ -128,7 +128,7 @@ document.getElementById('rzp-button').onclick = async function (e){
 
     rzp1.on('payment.failed', async function(response){
         console.log(response);
-        await axios.post('http://13.51.172.95:6500/purchase/updatetransactionstatus',{
+        await axios.post('http://13.51.200.50:6500/purchase/updatetransactionstatus',{
                 order_id:options.order_id,
                 payment_id:response.razorpay_payment_id,
                 status:'FAILED'
@@ -180,7 +180,7 @@ function showReport(){
 async function showLeaderboard(){
     const leaderboardButton = document.getElementById('leaderboard-button');
             const token = localStorage.getItem('token');
-            const userLeaderboardArray = await axios.get('http://13.51.172.95:6500/premium/showLeaderboard',{headers:{
+            const userLeaderboardArray = await axios.get('http://13.51.200.50:6500/premium/showLeaderboard',{headers:{
                 'Authorization':token
             }})
             
@@ -241,7 +241,7 @@ function showPagination({
 async function getProducts(page){
     const limit = localStorage.getItem('paginationValue')
     const token = localStorage.getItem('token');
-    let expenses = await axios.get(`http://13.51.172.95:6500/expense/get-expenses?page=${page}&&limit=${limit}`,{headers:{"Authorization":token}});
+    let expenses = await axios.get(`http://13.51.200.50:6500/expense/get-expenses?page=${page}&&limit=${limit}`,{headers:{"Authorization":token}});
     showPagination(expenses.data);
 
     for(let i=0;i<expenses.data.allExpenses.length;i++){

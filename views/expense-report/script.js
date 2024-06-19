@@ -15,7 +15,7 @@ yearHeading.innerHTML = year
 monthHeading.innerHTML = `${month} ${year}`;
 
 const token = localStorage.getItem('token')
-const expense = await axios.get('http://13.51.172.95:6500/expense/get-expenses',{headers:{'Authorization':token}});
+const expense = await axios.get('http://13.51.200.50:6500/expense/get-expenses',{headers:{'Authorization':token}});
 const allExpenses = expense.data.allExpenses;
 let totalExpense = 0;
 allExpenses.forEach((expense) => {
@@ -54,7 +54,7 @@ yearTable.innerHTML += expenseRow
 async function downloadReport(){
     const token = localStorage.getItem('token');
     try{
-    const result = await axios.get('http://13.51.172.95:6500/expense/download',{headers:{'Authorization':token}})
+    const result = await axios.get('http://13.51.200.50:6500/expense/download',{headers:{'Authorization':token}})
     if(result.status === 200){
         var a = document.createElement('a');
         a.href = result.data.fileUrl;
