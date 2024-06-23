@@ -8,7 +8,7 @@ async function forgotPassword(e){
 
 
     try{
-        const result = await axios.post('http://13.51.200.50:6500/password/forgot-password',{email:emailInput.value});
+        const result = await axios.post('http://13.51.158.192:6500/password/forgot-password',{email:emailInput.value});
         forgotPassForm.reset();
         alert('An email to reset password has been sent!')
     }

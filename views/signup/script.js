@@ -17,7 +17,7 @@ async function signUpFormSubmit(e){
     }
 
     try{
-        const user = await axios.post('http://13.51.200.50:6500/user/signup',obj);
+        const user = await axios.post('http://13.51.158.192:6500/user/signup',obj);
         signupForm.reset();
         console.log(user)
         if (user.status==200) {

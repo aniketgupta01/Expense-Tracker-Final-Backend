@@ -14,7 +14,7 @@ async function loginFormSubmit(e){
     }
 
     try{
-        let result = await axios.post("http://13.51.200.50:6500/user/login",obj);
+        let result = await axios.post("http://13.51.158.192:6500/user/login",obj);
         loginForm.reset();
 
         if(result.data.message == 'success'){
